@@ -1,0 +1,20 @@
+.nav {
+  grid-area: naaav;
+  background-color: aquamarine ;
+  padding: 20px;
+  border-radius: 10px;
+}
+.item a {
+  color: gray;
+  text-decoration: none;
+  
+}
+.item {
+margin-top: 10px;
+}
+.item a.active {
+  color : whitesmoke;
+  background-color: gray;
+  border-radius: 5px;
+  padding: 3px;
+}

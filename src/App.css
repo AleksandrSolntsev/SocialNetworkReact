@@ -1,0 +1,22 @@
+.app-wrapper {
+  display: grid;
+  margin: 0 auto;
+  width: 1200px;
+
+  grid-template-areas:
+  "headdder headdder"
+  "naaav contttent";
+  grid-template-rows: 60px 1fr;
+  grid-template-columns: 2fr 10fr;
+  grid-gap: 10px;
+  
+}
+
+.app-wrapper-content {
+  grid-area: contttent;
+  background-color: rgb(255, 255, 255);
+  border-radius: 10px;
+}
+
+
+
