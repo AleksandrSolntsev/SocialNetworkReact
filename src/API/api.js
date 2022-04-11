@@ -12,10 +12,21 @@ export const usersAPI = {
     getUsers(currentPage, pageSize) { //Принимает значения от того кто вызывает ф-ю(а там она в пропсах)
     return itance.get(`users?page=${currentPage}&count=${pageSize}`)
                 .then(response => response.data) //верни из запроса response.data
+    },
+    follow(userId) {
+        return itance.post(`follow/${userId}`)
+    },
+    unfollow(userId) {
+        return itance.delete(`follow/${userId}`)
+    },
+    getProfile(userId){
+        return itance.get(`profile/` + userId);
     }
+
 }
 
-export const getUsers2 = (currentPage, pageSize) => { //Принимает значения от того кто вызывает ф-ю(а там она в пропсах)
-    return itance.get(`users?page=${currentPage}&count=${pageSize}`)
-                .then(response => response.data) //верни из запроса response.data
-}
+export const authAPI = {
+    me () {
+    return itance.get(`auth/me`)
+                }
+            }

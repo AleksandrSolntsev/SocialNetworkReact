@@ -1,3 +1,5 @@
+import { usersAPI } from "../API/api";
+
 const ADD_POST = 'ADD_POST';
 const UPDATE_NEW_POST_TEXT = 'UPDATE_NEW_POST_TEXT';
 const SET_USER_PROFILE = 'SET_USER_PROFILE';
@@ -46,6 +48,12 @@ export const addPostActionCreator = () =>{
   }
 export const setUsersProfile = (profileData) =>{
     return {type : SET_USER_PROFILE, profileData}
+  }
+export const getUsersProfile = (userId) => (dispatch) =>{
+    return usersAPI.getProfile(userId).then(response => {
+        dispatch (setUsersProfile(response.data));        ////серvер вышлет в респонс Пользователей (приходят из response.data.items) и мы засетим их в пропс
+               
+      });
   }
 export const updateNewPostTextActionCreator = (text) =>{
     return {type : UPDATE_NEW_POST_TEXT, newText : text}

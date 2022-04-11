@@ -10,6 +10,7 @@ import UsersContainer from "./components/Users/UsersContainer"
 
 import { Route } from "react-router-dom";
 import ProfileContainer from "./components/Profile/ProfileContainer";
+import LoginPage from "./components/Login/login";
 
 
 const App = (props) => {
@@ -26,11 +27,12 @@ const App = (props) => {
         
         <Route path='/profile/:userId?' render ={ () => <ProfileContainer/>}/>  
         <Route path='/dialogs' render ={() => <DialogsContainer store={props.store}/>}/> 
-        <Route path='/news' element={<News />}/>
-        <Route path='/music' element={<Music />}/>
+        <Route path='/news' render={() =><News />}/>
+        <Route path='/music' render={() =><Music />}/>
         <Route path='/users' 
                render ={() => <UsersContainer />}/>
-        <Route path='/settings' element={<Settings />}/>
+        <Route path='/settings' render={() =><Settings />}/>
+        <Route path='/login' render={() =><LoginPage />}/>
         
       </div>
     </div>

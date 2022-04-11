@@ -2,11 +2,10 @@ import React from "react";
 import styles from "./Dialogs.module.css";
 import DialogItem from "./DialogItem/DialogItem"
 import Messages from "./Messages/Messages"
-import {updateNewMessageBodyCreator} from "../../redux/dialogs-reducer"
-import {sendMessageCreator} from "../../redux/dialogs-reducer"
+import {Redirect} from 'react-router-dom' 
 
 const Dialogs = (props) => {
-  
+ 
   let state=props.dialogPage;
 
   let DialogElements = state.dialogData.map((dialog) => (
@@ -18,7 +17,7 @@ const Dialogs = (props) => {
   ));
   let newMessageBody = state.newMessageBody;
 
-
+  
   let onSendMessageClick = () => {
     props.sendMessage();
   };
@@ -27,7 +26,10 @@ const Dialogs = (props) => {
     props.updateNewMessageBody(body)
     ///props.store.dispatch(updateNewMessageBodyCreator(body));   //подставь в диспатч {type : UPDATE_NEW_POST_TEXT, newText : text}
   }
-
+  console.log(props)
+  
+  if (!props.isAuth) return <Redirect to={"/login"}/>
+  
   return (
     <div className={styles.dialogs}>
       <div className={styles.dialogsItems}>{DialogElements}</div>
