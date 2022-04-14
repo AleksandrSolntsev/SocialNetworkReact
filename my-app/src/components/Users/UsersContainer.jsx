@@ -1,33 +1,36 @@
 import React from "react";
 import { connect } from "react-redux";
-import { follow, setUsers, setTotalUsersCount, toggleIsFetching, toggleFollowingInProgress } from "../../redux/users-reducer";
+import { follow, toggleFollowingInProgress, getUsersThunkCreator } from "../../redux/users-reducer";
 import { unfollow } from "../../redux/users-reducer";
-import { setCurrentPage } from "../../redux/users-reducer";
 import Users from "./Users"
 import Preloader from "../common/Preloader/Preloader";
-import { usersAPI } from "../../API/api";
+import { withAuthRedirect } from "../../hoc/withAuthRedirect";
+import { compose } from "redux";
 
 
-class UsersAPIComponent extends React.Component {
+
+class UsersContainer extends React.Component {
     constructor (props) { ///конструктор срабатывает всего один раз когда мы переходим на страницу
         super(props);   ///Их можно не писать потому как больше они ничего не делают
-        
     }
     componentDidMount() {
-        this.props.toggleIsFetching(true);
-        usersAPI.getUsers(this.props.currentPage, this.props.pageSize).then(data => {
-            this.props.setUsers(data.items);        ////серvер вышлет в респонс Пользователей (приходят из response.data.items) и мы засетим их в пропс
-            this.props.setTotalUsersCount(data.totalCount);
-            this.props.toggleIsFetching(false);
-            });
+        this.props.getUsers(this.props.currentPage, this.props.pageSize);
+        // this.props.toggleIsFetching(true);    СТАРЫЙ КОД
+        // usersAPI.getUsers(this.props.currentPage, this.props.pageSize).then(data => {
+        //     this.props.setUsers(data.items);        ////серvер вышлет в респонс Пользователей (приходят из response.data.items) и мы засетим их в пропс
+        //     this.props.setTotalUsersCount(data.totalCount);
+        //     this.props.toggleIsFetching(false);
+        //     });
     }
     onPageChanged = (pageNumber) =>{
-        this.props.setCurrentPage(pageNumber);
-        this.props.toggleIsFetching(true);
-        usersAPI.getUsers(pageNumber, this.props.pageSize).then(data => {
-            this.props.setUsers(data.items)
-            this.props.toggleIsFetching(false);
-        });
+        this.props.getUsers(pageNumber, this.props.pageSize);
+
+        // this.props.setCurrentPage(pageNumber);
+        // this.props.toggleIsFetching(true);
+        // usersAPI.getUsers(pageNumber, this.props.pageSize).then(data => {
+        //     this.props.setUsers(data.items)
+        //     this.props.toggleIsFetching(false);
+        // });
     }   
          
     render () {
@@ -40,7 +43,6 @@ class UsersAPIComponent extends React.Component {
                       users = {this.props.users}
                       unfollow = {this.props.unfollow}
                       follow = {this.props.follow}
-                      toggleFollowingInProgress = {this.props.toggleFollowingInProgress}
                       followingInProgress = {this.props.followingInProgress}
                       />
                       </>
@@ -59,15 +61,25 @@ let mapStateToProps = (state) => {  ///ф-я принимает весь сте�
     }
 }
 
-export default connect (mapStateToProps, {                                 //Передает стору экшены 
-    follow,    //Диспатчим результат работы followAC для userId
-    unfollow, /// была запись unfollow: unfollowAC переименовали unfollowAC в unfollow, поэтому можно указать только unfollow в параметрах
-    setUsers,
-    setCurrentPage,
-    setTotalUsersCount,
-    toggleIsFetching,
-    toggleFollowingInProgress    
-})(UsersAPIComponent);
+export default compose (
+    withAuthRedirect,
+    connect (mapStateToProps, {follow, unfollow, toggleFollowingInProgress, getUsers: getUsersThunkCreator})
+) (UsersContainer)
+
+
+// export default connect (mapStateToProps, {                                 //Передает стору экшены 
+//     follow,    //Диспатчим результат работы followAC для userId
+//     unfollow, /// была запись unfollow: unfollowAC переименовали unfollowAC в unfollow, поэтому можно указать только unfollow в параметрах
+    
+    
+//     toggleFollowingInProgress,
+//     getUsers: getUsersThunkCreator    
+// })(authRedirectComponent);
+
+
+
+
+
 
 // let mapDispatchToProps = (dispatch) => {  //функция которая передает в Users/ колбеки котрые презентационная комп-та может вызывать 
 //     return {                                 //Передает стору экшены 

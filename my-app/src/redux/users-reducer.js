@@ -1,3 +1,4 @@
+import { usersAPI } from "../API/api"
 const FOLLOW = 'FOLLOW';
 const UNFOLLOW = 'UNFOLLOW';
 const SET_USERS = 'SET_USERS';
@@ -5,6 +6,7 @@ const SET_CURRENT_PAGE = 'SET_CURRENT_PAGE';
 const SET_TOTAL_COUNT = 'SET_TOTAL_COUNT';
 const TOGGLE_IS_FETCHING = 'TOGGLE_IS_FETCHING';
 const TOGGLE_IS_FOLLOWING_PROGRESS = 'TOGGLE_IS_FOLLOWING_PROGRESS';
+
 
 
 let initialState = {    //стартовые входные данные 
@@ -54,17 +56,17 @@ const usersReducer = (state = initialState, action) => {   ////если в ст�
         case TOGGLE_IS_FOLLOWING_PROGRESS:
             return { ...state, followingInProgress: action.isFetching 
                 ? [...state.followingInProgress, action.userId] 
-                : state.followingInProgress.filter(id => id != action.userId) }
+                : state.followingInProgress.filter(id => id !== action.userId) }
                     
         default:                     ///если совпадений нет вернуть стейт
         return state;
             }
 }
 ///Создаем экшн криейтеры (ниже)
-export const follow = (userId) =>{  //follow action creator - Чистая функция которая возвращает экшн
+export const followSuccess = (userId) =>{  //follow action creator - Чистая функция которая возвращает экшн
     return {type : FOLLOW, userId}
   }
-export const unfollow = (userId) =>{
+export const unfollowSuccess = (userId) =>{
     return {type : UNFOLLOW, userId}
   }
 
@@ -84,15 +86,41 @@ export const toggleFollowingInProgress = (isFetching, userId) =>{
     return {type : TOGGLE_IS_FOLLOWING_PROGRESS, isFetching, userId} 
 }
 
-export const getUsers = (dispatch) => {
-    this.props.toggleIsFetching(true);
-        usersAPI.getUsers(this.props.currentPage, this.props.pageSize).then(data => {
-            this.props.setUsers(data.items);        ////серvер вышлет в респонс Пользователей (приходят из response.data.items) и мы засетим их в пропс
-            this.props.setTotalUsersCount(data.totalCount);
-            this.props.toggleIsFetching(false);
+export const getUsersThunkCreator = (currentPage, pageSize) => {
+return (dispatch) => {
+            dispatch (toggleIsFetching(true));
+            usersAPI.getUsers(currentPage, pageSize).then(data => {
+            dispatch(toggleIsFetching(false));
+            dispatch(setUsers(data.items));        ////серvер вышлет в респонс Пользователей (приходят из response.data.items) и мы засетим их в пропс
+            dispatch(setTotalUsersCount(data.totalCount));
+            dispatch(setCurrentPage(currentPage));
             });
+        }
 
 }
 
+export const follow = (userId, pageSize) => {
+    return (dispatch) => {
+        dispatch (toggleFollowingInProgress(true, userId));
+        usersAPI.follow(userId).then(response => {
+            if (response.data.reaultCode === 0){
+                dispatch(followSuccess(userId));
+            }
+            dispatch(toggleFollowingInProgress(false, userId));
+            });
+            }
+    }
+
+    export const unfollow = (userId, pageSize) => {
+        return (dispatch) => {
+            dispatch (toggleFollowingInProgress(true, userId));
+            usersAPI.unfollow(userId).then(response => {
+                if (response.data.reaultCode === 0){
+                    dispatch(unfollowSuccess(userId));
+                }
+                dispatch(toggleFollowingInProgress(false, userId));
+                });
+                }
+        }
 
 export default usersReducer; 
