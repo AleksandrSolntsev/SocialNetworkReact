@@ -2,17 +2,16 @@ import React from "react";
 import { connect } from "react-redux";
 import { follow, toggleFollowingInProgress, getUsersThunkCreator } from "../../redux/users-reducer";
 import { unfollow } from "../../redux/users-reducer";
-import { setCurrentPage } from "../../redux/users-reducer";
 import Users from "./Users"
 import Preloader from "../common/Preloader/Preloader";
 import { withAuthRedirect } from "../../hoc/withAuthRedirect";
+import { compose } from "redux";
 
 
 
-class UsersAPIComponent extends React.Component {
+class UsersContainer extends React.Component {
     constructor (props) { ///конструктор срабатывает всего один раз когда мы переходим на страницу
         super(props);   ///Их можно не писать потому как больше они ничего не делают
-        
     }
     componentDidMount() {
         this.props.getUsers(this.props.currentPage, this.props.pageSize);
@@ -61,15 +60,26 @@ let mapStateToProps = (state) => {  ///ф-я принимает весь сте�
         followingInProgress: state.usersPage.followingInProgress
     }
 }
-let authRedirectComponent = withAuthRedirect (UsersAPIComponent);
-export default connect (mapStateToProps, {                                 //Передает стору экшены 
-    follow,    //Диспатчим результат работы followAC для userId
-    unfollow, /// была запись unfollow: unfollowAC переименовали unfollowAC в unfollow, поэтому можно указать только unfollow в параметрах
+
+export default compose (
+    withAuthRedirect,
+    connect (mapStateToProps, {follow, unfollow, toggleFollowingInProgress, getUsers: getUsersThunkCreator})
+) (UsersContainer)
+
+
+// export default connect (mapStateToProps, {                                 //Передает стору экшены 
+//     follow,    //Диспатчим результат работы followAC для userId
+//     unfollow, /// была запись unfollow: unfollowAC переименовали unfollowAC в unfollow, поэтому можно указать только unfollow в параметрах
     
     
-    toggleFollowingInProgress,
-    getUsers: getUsersThunkCreator    
-})(authRedirectComponent);
+//     toggleFollowingInProgress,
+//     getUsers: getUsersThunkCreator    
+// })(authRedirectComponent);
+
+
+
+
+
 
 // let mapDispatchToProps = (dispatch) => {  //функция которая передает в Users/ колбеки котрые презентационная комп-та может вызывать 
 //     return {                                 //Передает стору экшены 

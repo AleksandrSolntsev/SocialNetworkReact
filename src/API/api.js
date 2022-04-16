@@ -20,7 +20,21 @@ export const usersAPI = {
         return itance.delete(`follow/${userId}`)
     },
     getProfile(userId){
+        return profileAPI.getProfile(userId);
+    }
+
+}
+
+
+export const profileAPI = {
+    getProfile(userId){
         return itance.get(`profile/` + userId);
+    },
+    getStatus(userId){
+        return itance.get(`profile/status/` + userId);
+    },
+    updateStatus(status){
+        return itance.put(`profile/status/`, {status:status})
     }
 
 }
