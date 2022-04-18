@@ -1,6 +1,7 @@
 import React from "react";
 import styles from "./ProfileInfo.module.css";
 import ProfileStatus from "./ProfileStatus"
+import ProfileStatusWithKooks from "./ProfileStatusWithHooks";
 
 const avaimg="https://www.clipartmax.com/png/middle/269-2695850_cat-icon-cat-icon-png.png";
 
@@ -14,7 +15,7 @@ const ProfileInfo = (props) => {
       </div> */}
       <div className={styles.descriptionBlock}>
         <img src ={props.profileData.photos.large}></img>
-        <ProfileStatus status={props.status} updateUserStatus={props.updateUserStatus}/>
+        <ProfileStatusWithKooks status={props.status} updateUserStatus={props.updateUserStatus}/>
         <a>Ava</a>
         <img src={avaimg}></img>
        </div>

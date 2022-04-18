@@ -41,6 +41,13 @@ export const profileAPI = {
 
 export const authAPI = {
     me () {
-    return itance.get(`auth/me`)
-                }
-            }
+        return itance.get(`auth/me`);
+                },
+    login (email, password, rememberMe = false) {
+        return itance.post(`auth/login`, {email, password, rememberMe});
+            },
+    logout () {
+        return itance.delete(`auth/login`);
+             }
+
+}

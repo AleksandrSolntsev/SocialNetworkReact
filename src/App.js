@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Component } from "react";
 import "./App.css";
 import HeaderContainer from "./components/Header/HeaderContainer.jsx";
 import Navbar from "./components/Navbar/Navbar.jsx";
@@ -7,15 +7,26 @@ import News from "./components/News/News";
 import Music from "./components/Music/Music";
 import Settings from "./components/Settings/Settings";
 import UsersContainer from "./components/Users/UsersContainer"
-
+import {initilizeApp} from "./redux/app-reducer";
 import { Route } from "react-router-dom";
 import ProfileContainer from "./components/Profile/ProfileContainer";
 import LoginPage from "./components/Login/login";
+import { connect } from "react-redux";
+import { compose } from "redux";
+import {withRouter} from "react-router-dom"
+import Preloader from "./components/common/Preloader/Preloader";
 
 
-const App = (props) => {
 
+class App extends Component {
+  componentDidMount (){
+    this.props.initilizeApp();
+}
 ///store={props.store}
+  render(){  
+    if(!this.props.initialized) {
+      return <Preloader/>
+    }
   return (
     
     //Создаем врапер в нем хедер, сайд бар и контент  dialogsState={props.state.dialogPage}
@@ -26,7 +37,7 @@ const App = (props) => {
         <div className='app-wrapper-content'>
         
         <Route path='/profile/:userId?' render ={ () => <ProfileContainer/>}/>  
-        <Route path='/dialogs' render ={() => <DialogsContainer store={props.store}/>}/> 
+        <Route path='/dialogs' render ={() => <DialogsContainer />}/> 
         <Route path='/news' render={() =><News />}/>
         <Route path='/music' render={() =><Music />}/>
         <Route path='/users' 
@@ -38,6 +49,12 @@ const App = (props) => {
     </div>
     // </BrowserRouter>
   );
+}
 };
 ///<Route path='/profile/:userId' element ={<ProfileContainer/>}/>
-export default App;
+const mapStateToProps = (state) => ({
+    initialized: state.app.initialized
+})
+export default compose(withRouter ,
+  connect (mapStateToProps, {initilizeApp}))(App);
+

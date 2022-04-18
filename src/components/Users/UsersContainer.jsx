@@ -6,6 +6,7 @@ import Users from "./Users"
 import Preloader from "../common/Preloader/Preloader";
 import { withAuthRedirect } from "../../hoc/withAuthRedirect";
 import { compose } from "redux";
+import { getCurrentPage, getFollowingInProgress, getIsFetching, getPageSize, getTotalUsersCount, getUsers } from "../../redux/users-selectors";
 
 
 
@@ -50,16 +51,27 @@ class UsersContainer extends React.Component {
 }
 
 
+// let mapStateToProps = (state) => {  ///ф-я принимает весь стейт целиком и возвращает объект только с нужными данными 
+//     return {
+//         users: state.usersPage.users,    ///В компоненту USERS прийдут юзери из стейта в пропсах 
+//         pageSize : state.usersPage.pageSize,
+//         totalUsersCount : state.usersPage.totalUsersCount,
+//         currentPage : state.usersPage.currentPage,
+//         isFetching : state.usersPage.isFetching,
+//         followingInProgress: state.usersPage.followingInProgress
+//     }
+// }
+
 let mapStateToProps = (state) => {  ///ф-я принимает весь стейт целиком и возвращает объект только с нужными данными 
-    return {
-        users: state.usersPage.users,    ///В компоненту USERS прийдут юзери из стейта в пропсах 
-        pageSize : state.usersPage.pageSize,
-        totalUsersCount : state.usersPage.totalUsersCount,
-        currentPage : state.usersPage.currentPage,
-        isFetching : state.usersPage.isFetching,
-        followingInProgress: state.usersPage.followingInProgress
+        return {
+            users: getUsers(state),    ///В компоненту USERS прийдут юзери из стейта в пропсах 
+            pageSize : getPageSize(state),
+            totalUsersCount : getTotalUsersCount(state),
+            currentPage : getCurrentPage(state),
+            isFetching : getIsFetching(state),
+            followingInProgress: getFollowingInProgress(state)
+        }
     }
-}
 
 export default compose (
     withAuthRedirect,
