@@ -30,24 +30,30 @@ class App extends Component {
   return (
     
     //Создаем врапер в нем хедер, сайд бар и контент  dialogsState={props.state.dialogPage}
-    // <BrowserRouter>
+    
     <div className='app-wrapper'>
       <HeaderContainer />
       <Navbar />
         <div className='app-wrapper-content'>
         
-        <Route path='/profile/:userId?' render ={ () => <ProfileContainer/>}/>  
-        <Route path='/dialogs' render ={() => <DialogsContainer />}/> 
-        <Route path='/news' render={() =><News />}/>
-        <Route path='/music' render={() =><Music />}/>
+        <Route path='/profile/:userId?' 
+          render ={ () => <ProfileContainer/>}/>  
+        <Route path='/dialogs' 
+          render ={() => <DialogsContainer />}/> 
+        <Route path='/news' 
+          render={() =><News />}/>
+        <Route path='/music' 
+          render={() =><Music />}/>
         <Route path='/users' 
                render ={() => <UsersContainer />}/>
-        <Route path='/settings' render={() =><Settings />}/>
-        <Route path='/login' render={() =><LoginPage />}/>
+        <Route path='/settings' 
+          render={() =><Settings />}/>
+        <Route path='/login' 
+          render={() =><LoginPage />}/>
         
       </div>
     </div>
-    // </BrowserRouter>
+   
   );
 }
 };

@@ -6,7 +6,7 @@ const Post = (props) => {
     <div className={styles.items}>
       <img
         className={styles.avaimg}
-        src="https://www.clipartmax.com/png/middle/269-2695850_cat-icon-cat-icon-png.png"
+        src="https://spng.pinpng.com/pngs/s/341-3415688_no-avatar-png-transparent-png.png"
       ></img>
       {props.message}
       <div className={styles.likeBox}>

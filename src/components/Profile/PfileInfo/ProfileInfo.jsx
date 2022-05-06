@@ -3,7 +3,7 @@ import styles from "./ProfileInfo.module.css";
 import ProfileStatus from "./ProfileStatus"
 import ProfileStatusWithKooks from "./ProfileStatusWithHooks";
 
-const avaimg="https://www.clipartmax.com/png/middle/269-2695850_cat-icon-cat-icon-png.png";
+const avaimg="https://spng.pinpng.com/pngs/s/341-3415688_no-avatar-png-transparent-png.png";
 
 const ProfileInfo = (props) => {
   ///props.profileData.photos.large

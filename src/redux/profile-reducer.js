@@ -44,26 +44,22 @@ export const addPostActionCreator = (postText) =>{
 export const setUsersProfile = (profileData) =>{
     return {type : SET_USER_PROFILE, profileData}
   }
-export const getUsersProfile = (userId) => (dispatch) =>{
-    return usersAPI.getProfile(userId).then(response => {
-        dispatch (setUsersProfile(response.data));        ////серvер вышлет в респонс Пользователей (приходят из response.data.items) и мы засетим их в пропс
-               
-      });
+export const getUsersProfile = (userId) => async(dispatch) =>{
+    let response = await usersAPI.getProfile(userId)
+    dispatch (setUsersProfile(response.data));        ////серvер вышлет в респонс Пользователей (приходят из response.data.items) и мы засетим их в пропс
   }
 export const setStatus = (status) =>{
     return {type : SET_STATUS, status}
   }
-  export const getUserStatus = (userId) => (dispatch) =>{
-    return profileAPI.getStatus(userId).then(response => {
-        dispatch (setStatus(response.data));        
-        });
+  export const getUserStatus = (userId) => async (dispatch) =>{
+    let response = await profileAPI.getStatus(userId)
+    dispatch (setStatus(response.data));        
   }
-  export const updateUserStatus = (status) => (dispatch) =>{ ///
-    return profileAPI.updateStatus(status).then(response => {
-            if (response.data.resultCode === 0){
-        dispatch (setStatus(status));
-            }        
-        });
+  export const updateUserStatus = (status) => async (dispatch) =>{ ///
+    let response = await profileAPI.updateStatus(status)
+        if (response.data.resultCode === 0){
+            dispatch (setStatus(status));
+            }
   }
   
   

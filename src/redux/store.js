@@ -49,7 +49,5 @@ dispatch (action) {
 
 }
 
-
-
 ///export default store;
 window.state = store;
