@@ -23,7 +23,6 @@ class App extends Component {
   componentDidMount (){
     this.props.initilizeApp();
 }
-///store={props.store}
   render(){  
     if(!this.props.initialized) {
       return <Preloader/>

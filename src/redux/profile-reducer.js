@@ -3,6 +3,7 @@ import { profileAPI, usersAPI } from "../API/api";
 const ADD_POST = 'ADD_POST';
 const SET_USER_PROFILE = 'SET_USER_PROFILE';
 const SET_STATUS = 'SET_STATUS';
+const SAVE_PHOTO_SUCCESS = 'SAVE_PHOTO_SUCCESS'
 
 
 
@@ -33,11 +34,16 @@ const profileReducer = (state = initialState, action) => {   ////если в с�
             return { ...state, profileData: action.profileData}
         case SET_STATUS:
                 return { ...state, status: action.status}
+        case SAVE_PHOTO_SUCCESS:
+                return { ...state, profileData: {...state.profileData, photos: action.photos}}
         default:                     ///если совпадений нет вернуть стейт
             return state; 
              }
 }
 ///Создаем экшн криейтеры (ниже)
+export const savePhotoSuccess = (photos) =>{
+  return {type : SAVE_PHOTO_SUCCESS, photos}
+}
 export const addPostActionCreator = (postText) =>{
     return {type : ADD_POST, postText}
   }
@@ -55,10 +61,23 @@ export const setStatus = (status) =>{
     let response = await profileAPI.getStatus(userId)
     dispatch (setStatus(response.data));        
   }
-  export const updateUserStatus = (status) => async (dispatch) =>{ ///
+  export const updateUserStatus = (status) => async (dispatch) =>{ 
     let response = await profileAPI.updateStatus(status)
         if (response.data.resultCode === 0){
             dispatch (setStatus(status));
+            }
+  }
+  export const savePhoto = (file) => async (dispatch) =>{ 
+    let response = await profileAPI.savePhoto(file)
+        if (response.data.resultCode === 0){
+            dispatch (savePhotoSuccess(response.data.data.photos));
+            }
+  }
+  export const saveProfile = (profile) => async (dispatch, getState) =>{
+    const userId = getState().auth.userId
+    const response = await profileAPI.saveProfile(profile)
+        if (response.data.resultCode === 0){
+            dispatch (getUsersProfile(userId));
             }
   }
   

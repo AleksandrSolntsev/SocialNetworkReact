@@ -17,11 +17,7 @@ let initialState = {    //стартовые входные данные
     currentPage : 1,
     isFetching : false,
     followingInProgress: []
-    // users : [
-    //     {id: 1, photoUrl: 'https://pngimg.com/uploads/cat/cat_PNG50549.png', followed: true, fullNAme:'Alex', status: 'HappyNow!', location:{city: 'ZP', country:'UA'} },
-    //     {id: 2, photoUrl: 'https://pngimg.com/uploads/cat/cat_PNG50547.png', followed: false, fullNAme:'Dima', status: 'Jahoo!', location:{city: 'DP', country:'UA'} },
-    //     {id: 3, photoUrl: 'https://pngimg.com/uploads/cat/cat_PNG50533.png', followed: true, fullNAme:'Maximus', status: 'YoMan!', location:{city: 'ZP', country:'UA'} },
-    // ],
+
      
 }
 
@@ -29,8 +25,10 @@ const usersReducer = (state = initialState, action) => {   ////если в ст�
    
     switch (action.type) {
         case FOLLOW:
+            
             return {...state, 
                 users: updateObjectInArray(state.users, action.userId, "id", {followed: true})
+                
         }
         case UNFOLLOW:
             return {...state, 
@@ -47,6 +45,7 @@ const usersReducer = (state = initialState, action) => {   ////если в ст�
         case TOGGLE_IS_FETCHING:
             return { ...state, isFetching: action.isFetching}
         case TOGGLE_IS_FOLLOWING_PROGRESS:
+
             return { ...state, followingInProgress: action.isFetching 
                 ? [...state.followingInProgress, action.userId] 
                 : state.followingInProgress.filter(id => id !== action.userId) }
@@ -85,7 +84,7 @@ return async(dispatch) => {
             dispatch(setCurrentPage(currentPage));
 
             let data = await usersAPI.getUsers(currentPage, pageSize);
-            dispatch(toggleIsFetching(false));
+            dispatch(toggleIsFetching(false));   ///загрузка странички
             dispatch(setUsers(data.items));        ////серvер вышлет в респонс Пользователей (приходят из response.data.items) и мы засетим их в пропс
             dispatch(setTotalItemsCount(data.totalCount));
         }
@@ -93,14 +92,15 @@ return async(dispatch) => {
 const followUnfollowFlow = async(dispatch, userId, apiMethod, actionCreator) => {
     dispatch (toggleFollowingInProgress(true, userId));
     let response = await apiMethod(userId)
-        if (response.data.reaultCode === 0){
+        if (response.data.resultCode === 0){
             dispatch(actionCreator(userId));
         }
         dispatch(toggleFollowingInProgress(false, userId));
 }
 export const follow = (userId) => {
-    return async (dispatch) => {
+    return async (dispatch, getState) => {
         followUnfollowFlow(dispatch, userId, usersAPI.follow.bind(usersAPI), followSuccess)
+        ///////////////
         }
     }
 

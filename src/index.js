@@ -9,7 +9,7 @@ import {Provider} from 'react-redux'
 ///let renderEntireTree = () => {
 ///old app props state={state} dispatch={store.dispatch.bind(store)} store={store}
   ReactDOM.render(
-      <BrowserRouter>
+      <BrowserRouter basename={process.env.PUBLIC_URL}>
          <Provider store={store}>
              <App  />   
          </Provider>

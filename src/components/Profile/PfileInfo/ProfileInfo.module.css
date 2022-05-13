@@ -9,8 +9,15 @@
     border-top-right-radius: 10px;
 }
 
-.descriptionBlock img {
+/* .descriptionBlock img {
     height: 120px;
     width: 120px;
-    border-radius: 70px;
+    border-radius: 80px;
+} */
+.mainPhoto {
+    max-width: 200px;
+    border-radius: 80px;
+}
+.contacts {
+    padding-left: 40px;
 }

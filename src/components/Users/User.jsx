@@ -5,6 +5,7 @@ import { NavLink } from "react-router-dom";
 
 let User = (props) => {  
     let u = props.user
+
     return  (
         <div>
             <span>

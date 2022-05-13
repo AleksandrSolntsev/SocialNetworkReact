@@ -1,5 +1,6 @@
 import * as axios from "axios"
 
+
 const itance = axios.create({
     withCredentials: true,
     headers: {
@@ -15,6 +16,7 @@ export const usersAPI = {
     },
     follow(userId) {
         return itance.post(`follow/${userId}`)
+                
     },
     unfollow(userId) {
         return itance.delete(`follow/${userId}`)
@@ -35,6 +37,19 @@ export const profileAPI = {
     },
     updateStatus(status){
         return itance.put(`profile/status/`, {status:status})
+    },
+    savePhoto(photoFile) {
+        const formData = new FormData();
+        formData.append("image", photoFile)
+
+        return itance.put(`profile/photo/`, formData, {
+            headers: {
+                'Content-Type' : 'multipart/form-data'
+            }
+        })
+    },
+    saveProfile(profile) {
+        return itance.put(`profile`, profile)
     }
 
 }
