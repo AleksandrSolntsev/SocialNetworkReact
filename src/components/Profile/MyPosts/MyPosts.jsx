@@ -10,7 +10,7 @@ const maxLength10 = maxLengthCreator(10);
 
 const MyPosts = React.memo(props => {
   console.log("RenderPosts")
-  let postsElements= props.posts.map(posts => <Post id={posts.id} 
+  let postsElements= props.posts.map(posts => <Post key={posts.id} id={posts.id} 
     message={posts.message} likes={posts.likes} />);
   
   let onAddPost = (postText) => {

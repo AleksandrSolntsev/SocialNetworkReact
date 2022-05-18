@@ -8,13 +8,16 @@ import { connect } from "react-redux";
 import style from "../common/FormsControls/FormsControls.module.css"
 
 const maxLength20 = maxLengthCreator (20);
-const LoginForm = ({handleSubmit, error}) =>{
+const LoginForm = ({handleSubmit, error, captchaURL}) =>{
     return(
     <form onSubmit={handleSubmit}>
         {createField("Email", "email", [requiredField, maxLength20], Input)}
         {createField("Password", "password", [requiredField, maxLength20], Input, {type: "password"})}
         {createField(null, "rememberMe", [], Input, {type: "checkbox"}, "Remember Me")}
         
+        {captchaURL && <img src={captchaURL}/>}
+        {captchaURL && createField("Symbols of captcha", "captcha", [requiredField], Input, {})}
+
         {error && <div className={style.formSummaryError}>{error}</div>}
         <div>
             <button>Login</button>
@@ -29,7 +32,7 @@ const LoginReduxForm = reduxForm ({
 const Login = (props) =>{
     
     const onSubmit = (formData) =>{
-        props.login(formData.email, formData.password, formData.rememberMe) //Передать колбек в санкриейтор
+        props.login(formData.email, formData.password, formData.rememberMe, formData.captcha) //Передать колбек в санкриейтор
     }
     
     if (props.isAuth){
@@ -37,10 +40,11 @@ const Login = (props) =>{
     }
     return <div>
     <h1>Login</h1>
-    <LoginReduxForm onSubmit={onSubmit}/>
+    <LoginReduxForm onSubmit={onSubmit} captchaURL={props.captchaURL}/>
          </div> 
 }
 const mapStateToProps = (state) => ({
+    captchaURL: state.auth.captchaURL,
     isAuth: state.auth.isAuth
 })
 export default connect(mapStateToProps, {login, logout})(Login); //Коннект создаст колбек с таким же именемм login

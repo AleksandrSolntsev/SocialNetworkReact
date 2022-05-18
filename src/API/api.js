@@ -58,11 +58,16 @@ export const authAPI = {
     me () {
         return itance.get(`auth/me`);
                 },
-    login (email, password, rememberMe = false) {
-        return itance.post(`auth/login`, {email, password, rememberMe});
+    login (email, password, rememberMe = false, captcha=null) {
+        return itance.post(`auth/login`, {email, password, rememberMe, captcha});
             },
     logout () {
         return itance.delete(`auth/login`);
              }
+}
 
+export const securityAPI = {
+    getCaptchaURL () {
+        return itance.get(`security/get-captcha-url`);
+                },
 }
